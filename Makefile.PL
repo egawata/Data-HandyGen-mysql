@@ -13,6 +13,10 @@ WriteMakefile(
         "Test::Exception"       => 0,
         "Test::mysqld"          => 0,
     }, # e.g., Module::Name => 1.1
+    EXE_FILES         => [ 
+        'script/hd_insert_bulk.pl', 
+        'script/hd_delete_all.pl' 
+    ],
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Test/HandyData/mysql.pm', # retrieve abstract from module
        AUTHOR         => 'Takashi Egawa <egawa.takashi@gmail.com>') : ()),
