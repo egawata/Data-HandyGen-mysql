@@ -9,9 +9,12 @@ WriteMakefile(
         "DBI"                   => 1.38,
         "SQL::Maker"            => 0,
         "Class::Accessor::Lite" => 0,
+        "DateTime"              => 0,
+        "DBD::mysql"            => 0,
         "Test::More"            => '0.87_01',
         "Test::Exception"       => 0,
         "Test::mysqld"          => 0,
+        "Test::Warn"            => 0,
     }, # e.g., Module::Name => 1.1
     EXE_FILES         => [ 
         'script/hd_insert_bulk.pl', 
