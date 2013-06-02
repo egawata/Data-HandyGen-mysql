@@ -229,7 +229,7 @@ FORMAT:
         ....
     }
 
-EXAMPLE: Save the following as C<exapmle.json>
+EXAMPLE: Save the following as C<example.json>
 
     {
         "item" : {
