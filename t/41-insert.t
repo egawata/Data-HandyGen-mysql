@@ -30,16 +30,18 @@ sub main {
     my $hd = Test::HandyData::mysql->new(dbh => $dbh);
 
 
-    #  Write test code here.
-    test_nullable($hd);
-    test_pk($hd);
-    test_notnull_nofk($hd);
-    test_notnull_default_fk($hd);
-    test_notnull_nodefault_fk($hd);
-    test_error($hd);
-    test_nopk($hd);
-    test_pk2($hd);
-
+    for my $engine (qw/ INNODB MyISAM /) {
+        diag "Testing $engine ...";
+        $dbh->do(qq{SET storage_engine=$engine});
+        test_nullable($hd);
+        test_pk($hd);
+        test_notnull_nofk($hd);
+        test_notnull_default_fk($hd);
+        test_notnull_nodefault_fk($hd);
+        test_error($hd);
+        test_nopk($hd);
+        test_pk2($hd);
+    }
 
     $dbh->disconnect();
 
@@ -55,6 +57,8 @@ sub test_nullable {
     $hd->fk(1);
     my $dbh = $hd->dbh;
 
+    $dbh->do(q{DROP TABLE IF EXISTS test_nullable});
+    $dbh->do(q{DROP TABLE IF EXISTS test_nullable_foreign});
     $dbh->do(q{
         CREATE TABLE test_nullable_foreign (
             id int primary key,
@@ -96,6 +100,7 @@ sub test_pk {
     my $dbh = $hd->dbh;
 
     #  auto_increment primary key
+    $dbh->do(q{DROP TABLE IF EXISTS test_pk_ai});
     $dbh->do(q{
         CREATE TABLE test_pk_ai (
             id int primary key auto_increment
@@ -114,6 +119,7 @@ sub test_pk {
     is($id, 301);
     
     #  Non-auto_increment primary key 
+    $dbh->do(q{DROP TABLE IF EXISTS test_pk_nai});
     $dbh->do(q{
         CREATE TABLE test_pk_nai (
             id int primary key
@@ -124,6 +130,7 @@ sub test_pk {
    
     
     #  Varchar primary key
+    $dbh->do(q{DROP TABLE IF EXISTS test_pk_varchar});
     $dbh->do(q{
         CREATE TABLE test_pk_varchar (
             id varchar(10) primary key
@@ -142,6 +149,7 @@ sub test_notnull_nofk {
     my ($hd) = @_;
     my $dbh = $hd->dbh;
 
+    $dbh->do(q{DROP TABLE IF EXISTS test_notnull_nofk});
     $dbh->do(q{
         CREATE TABLE test_notnull_nofk (
             id integer primary key auto_increment,
@@ -333,6 +341,7 @@ sub test_error {
     my ($hd) = @_;
     my $dbh = $hd->dbh;
 
+    $dbh->do(q{DROP TABLE IF EXISTS test_error1});
     $dbh->do(q{
         CREATE TABLE test_error1 (
             id integer
@@ -349,6 +358,7 @@ sub test_nopk {
     
     my $dbh = $hd->dbh;
     
+    $dbh->do(q{DROP TABLE IF EXISTS test_pk0});
     $dbh->do(q{
         CREATE TABLE test_pk0 (
             col1 varchar(10),
@@ -371,6 +381,7 @@ sub test_pk2 {
     my ($hd) = @_;
     my $dbh = $hd->dbh;
 
+    $dbh->do(q{DROP TABLE IF EXISTS test_pk2});
     $dbh->do(q{
         CREATE TABLE test_pk2 (
             id1 integer,
