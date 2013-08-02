@@ -23,6 +23,7 @@ use DBI;
 use DateTime;
 use Carp;
 use SQL::Maker;
+use DateTime;
 use Class::Accessor::Lite (
     new     => 1,
     rw      => [
@@ -267,6 +268,23 @@ value of 'colname' is decided as one of $val1, $val2, ... randomly.
 
 verbose expression of above
 
+=item * colname => { range => [ $min, $max ] }
+
+value of 'colname' is determined between $min and $max ($min inclusive, $max exclusive). Can be used only for number(int, double, numeric, etc.).
+
+=item * colname => { dt_range => [ $start_datetime, $end_datetime ] }
+
+value of 'colname' is determined between $start_datetime and $end_datetime ($start_datetime inclusive, $end_datetime exclusive). Can be used only for date or datetime type.
+
+    $hd->insert('table1', { 
+        purchase_datetime => { dt_range => [ '2013-07-20 12:00:00', '2013-7-21 14:00:00' ] } 
+    });
+
+    $hd->insert('table2', {
+        exec_datetime => { dt_range => [ '2013-08-01', '2013-08-05' ] }     #  time can be ommitted
+    });
+
+
 =back
 
 =head3 column name
@@ -466,9 +484,62 @@ sub determine_value {
 
         $value = $fixval;
     }
+    elsif ( exists($valspec_col->{range} ) {
+        my $spec = $valspec_col->{range};
+        ref $spec eq 'ARRAY' and @$spec == 2 
+            or confess "Value of 'range' must be an arrayref with (begin, end) values";
+        _get_random_range(@$spec);
+    }
+    elsif ( exists($valspec_col->{dt_range}) ) {
+        my $spec = $valspec_col->{dt_range};
+        ref $spec eq 'ARRAY' and @$spec == 2 
+            or confess "Value of 'dt_range' must be an arrayref with (start, end) values";
+        _get_random_dt_range(@$spec);
+    }        
 
     return $value;
 }
+
+
+sub _get_random_range {
+    my ($begin, $end) = @_;
+
+    my $value = $begin + rand($end - $begin);
+    return $value;
+}
+
+
+sub _get_random_dt_range {
+    my ($start, $end) = @_;
+
+    my $start_epoch = _get_epoch($start);
+    my $end_epoch   = _get_epoch($end);
+    
+    my $value = DateTime
+                ->from_epoch( epoch => $start_epoch + rand($end_epoch - $start_epoch) )
+                ->strftime("%Y-%m-%d %H:%M:%S");
+
+    return $value;
+}
+
+
+sub _get_epoch {
+    my ($timestr) = @_;
+
+    #  time format is expected to 'yyyy-mm-dd hh:mm:ss'
+    my @ymdhms = split /\D/, $timestr;     
+    my $dt = DateTime->new(
+        year    => $ymdhms[0],
+        month   => $ymdhms[1] || 1,
+        day     => $ymdhms[2] || 1,
+        hour    => $ymdhms[3] || 0,
+        minute  => $ymdhms[4] || 0,
+        second  => $ymdhms[5] || 0,
+    );
+
+    return $dt->epoch();
+}
+
 
 
 #  Check if a record with specified column value exists.
