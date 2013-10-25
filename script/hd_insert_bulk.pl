@@ -31,6 +31,7 @@ sub main {
     my $debug = 0;
     my $noutf8 = 0;
     my ($dbname, $host, $port, $user, $password);
+    my ($target_table, $number);
     GetOptions(
         'i|in|infile=s' => \$infile,
         'd|dbname=s'    => \$dbname,
@@ -40,13 +41,23 @@ sub main {
         'p|password=s'  => \$password,
         'debug'         => \$debug,
         'noutf8'        => \$noutf8,
+        't|table=s'     => \$target_table,
+        'n|number=i'    => \$number,
     );
    
-    $infile or usage();
-    open my $JSON, '<', $infile
-        or die "Failed to open infile : $infile : $!";
-    my $json = do { local $/; <$JSON> };
-    close $JSON;
+    ($infile) or ($target_table and $number) or usage();
+
+    my $json;
+    if ( $infile ) {
+        open my $JSON, '<', $infile
+            or die "Failed to open infile : $infile : $!";
+        $json = do { local $/; <$JSON> };
+        close $JSON;
+    }
+    else {
+        $json = qq!{ "$target_table": [ ! . (join ',', ('{}') x $number) . ' ] }';
+        print "$json\n";
+    }
 
     my $dsn = "dbi:mysql:dbname=$dbname";
     $host and $dsn .= ";host=$host";
@@ -65,7 +76,7 @@ sub main {
 
             my $list = $req->{$table};
             
-            #  When arrayref is passed instead of hashref, give IDs to each elements.
+            #  When arrayref is passed instead of hashref, IDs in the arrayref will be assigned to each elements.
             if ( ref $list eq 'ARRAY' ) {
                 $list = {};
                 my $no = 1;
@@ -130,12 +141,18 @@ sub insert {
 sub usage {
     print <<USAGE;
 Options:
-    -i(--in,--infile) : input file (JSON)
     -d(--dbname)      : database name
     -h(--host)        : host
     --port            : port no
     -u(--user)        : username
     -p(--password)    : password
+
+Options reading config from file:
+    -i(--in,--infile) : input file (JSON)
+
+Options simply inserting records to a table:
+    -t(--table)       : table
+    -n(--number)      : the number of inserted records
 
 USAGE
 
@@ -280,7 +297,7 @@ This will make
         | 503 |          51 |     101 |
         +-----+-------------+---------+
 
-NOTE: ID may be omitted if it starts with 1 and is incremented one by one. 
+NOTE: ID can be omitted if it starts with 1 and is incremented one by one. 
 
         "purchase" : {
             "1": { "customer_id" : "##customer.1", "item_id" : "##item.1" },

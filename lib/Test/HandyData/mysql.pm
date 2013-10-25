@@ -484,7 +484,7 @@ sub determine_value {
 
         $value = $fixval;
     }
-    elsif ( exists($valspec_col->{range} ) {
+    elsif ( exists($valspec_col->{range} ) ) {
         my $spec = $valspec_col->{range};
         ref $spec eq 'ARRAY' and @$spec == 2 
             or confess "Value of 'range' must be an arrayref with (begin, end) values";
@@ -727,9 +727,8 @@ sub get_cols_requiring_value {
             #  So I've changed the way assuming the user rule would be specified
             #  as the DEFAULT value.
             #  
-            #  Commented out the line below.
-
-            #next if defined($col_def->column_default);
+            #  Skip only the column isn't a foreign key and has default value.
+            next if defined($col_def->column_default) and not $table_def->is_fk($col);
 
             #  When NULL value is accetable, skip the column.
             next if $col_def->is_nullable eq 'YES';
