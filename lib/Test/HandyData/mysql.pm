@@ -18,12 +18,12 @@ our $DISTINCT_VAL_FETCH_LIMIT = 100;
 our $RANGE_YEAR_YEAR = 20;
 our $RANGE_YEAR_DATETIME = 2;
 
-
 use DBI;
 use DateTime;
 use Carp;
 use SQL::Maker;
 use DateTime;
+use Data::Dumper;
 use Class::Accessor::Lite (
     new     => 1,
     rw      => [
@@ -492,13 +492,13 @@ sub determine_value {
         my $spec = $valspec_col->{range};
         ref $spec eq 'ARRAY' and @$spec == 2 
             or confess "Value of 'range' must be an arrayref with (begin, end) values";
-        _get_random_range(@$spec);
+        $value = _get_random_range(@$spec);
     }
     elsif ( exists($valspec_col->{dt_range}) ) {
         my $spec = $valspec_col->{dt_range};
         ref $spec eq 'ARRAY' and @$spec == 2 
             or confess "Value of 'dt_range' must be an arrayref with (start, end) values";
-        _get_random_dt_range(@$spec);
+        $value = _get_random_dt_range(@$spec);
     }        
 
     return $value;
