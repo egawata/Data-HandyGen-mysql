@@ -484,6 +484,10 @@ sub determine_value {
 
         $value = $fixval;
     }
+    elsif ( exists($valspec_col->{any}) ) {
+        #  Leave it null. Value will be assigned later.
+        return undef;
+    }
     elsif ( exists($valspec_col->{range} ) ) {
         my $spec = $valspec_col->{range};
         ref $spec eq 'ARRAY' and @$spec == 2 
@@ -940,7 +944,7 @@ sub _get_current_distinct_values {
 sub _set_user_valspec {
     my ($self, $table, $table_valspec) = @_;
 
-    #  前回の条件をクリア
+    #  Clear previous valspec
     $self->_valspec({});
 
     $self->_add_user_valspec($table, $table_valspec);
@@ -996,6 +1000,11 @@ sub _add_user_valspec {
                 $self->_valspec()->{$_table}{$_col}{$_} = $val->{$_};
             }
 
+        }
+        elsif ( $$val eq 'any' ) {
+            #  scalarref to string 'any'
+            #  determine value randomly.
+            $self->_valspec()->{$_table}{$_col}{any} = 1;
         }
         elsif ( ref $val eq '' ) {
             #  scalar : fix value

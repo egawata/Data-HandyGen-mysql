@@ -31,7 +31,7 @@ sub main {
     my $debug = 0;
     my $noutf8 = 0;
     my ($dbname, $host, $port, $user, $password);
-    my ($target_table, $number);
+    my ($target_table, $number, $required_fields);
     GetOptions(
         'i|in|infile=s' => \$infile,
         'd|dbname=s'    => \$dbname,
@@ -43,21 +43,10 @@ sub main {
         'noutf8'        => \$noutf8,
         't|table=s'     => \$target_table,
         'n|number=i'    => \$number,
+        'required=s'    => \$required_fields,
     );
    
     ($infile) or ($target_table and $number) or usage();
-
-    my $json;
-    if ( $infile ) {
-        open my $JSON, '<', $infile
-            or die "Failed to open infile : $infile : $!";
-        $json = do { local $/; <$JSON> };
-        close $JSON;
-    }
-    else {
-        $json = qq!{ "$target_table": [ ! . (join ',', ('{}') x $number) . ' ] }';
-        print "$json\n";
-    }
 
     my $dsn = "dbi:mysql:dbname=$dbname";
     $host and $dsn .= ";host=$host";
@@ -70,40 +59,70 @@ sub main {
     my $hd = Test::HandyData::mysql->new( dbh => $dbh, fk => 1, debug => $debug );
 
     eval {
-        $req = decode_json($json);
-
-        for my $table (keys %$req) {
-
-            my $list = $req->{$table};
-            
-            #  When arrayref is passed instead of hashref, IDs in the arrayref will be assigned to each elements.
-            if ( ref $list eq 'ARRAY' ) {
-                $list = {};
-                my $no = 1;
-                for ( @{ $req->{$table} } ) {
-                    $list->{$no++} = $_;
-                }
-            }
-
-            for my $id ( keys %$list ) {
-                next if $ids{$table}{$id};
-                my $real_id = insert($hd, $table, $list->{$id});
-                $ids{$table}{$id} = $real_id;
-            }
+        if ( $infile ) {
+            insert_from_file($hd, $infile);
+        }
+        else {
+            insert_to_table($hd, $target_table, $number, $required_fields);
         }
     };
     if ($@) {
-        $dbh->rollback;
+        $hd->dbh->rollback;
         die "Failed to insert : $@";
     }
     else {
-        $dbh->commit;
+        $hd->dbh->commit;
     }
 
     print YAML::Dump($hd->inserted);
 }
 
 
+
+sub insert_from_file {
+    my ($hd, $infile) = @_;
+
+    open my $JSON, '<', $infile
+        or die "Failed to open infile : $infile : $!";
+    my $json = do { local $/; <$JSON> };
+    close $JSON;
+
+    $req = decode_json($json);
+
+    for my $table (keys %$req) {
+
+        my $list = $req->{$table};
+        
+        #  When arrayref is passed instead of hashref, IDs in the arrayref will be assigned to each elements.
+        if ( ref $list eq 'ARRAY' ) {
+            $list = {};
+            my $no = 1;
+            for ( @{ $req->{$table} } ) {
+                $list->{$no++} = $_;
+            }
+        }
+
+        for my $id ( keys %$list ) {
+            next if $ids{$table}{$id};
+            my $real_id = insert($hd, $table, $list->{$id});
+            $ids{$table}{$id} = $real_id;
+        }
+    }
+}
+
+
+sub insert_to_table {
+    my ($hd, $table, $num, $required) = @_;
+
+    my %user_val = ();
+    for ( split ',', $required ) {
+        $user_val{$_} = \'any';
+    }
+
+    for ( 1 .. $num ) {
+        $hd->insert($table, \%user_val);
+    } 
+}
 
 
 sub insert {
@@ -153,6 +172,7 @@ Options reading config from file:
 Options simply inserting records to a table:
     -t(--table)       : table
     -n(--number)      : the number of inserted records
+    --required        : a list of columns which require value
 
 USAGE
 
@@ -173,11 +193,9 @@ __END__
 
 =head1 ARGUMENTS
 
+=head2 General
+
 =over 4
-
-=item * -i | --in | --infile
-
-I<< (Required) >> a file in which a list of records to be inserted is written.
 
 =item * -d | --dbname
 
@@ -198,6 +216,31 @@ I<< (Required) >> User name to connect mysql
 =item * -p | --password
 
 I<< (Required) >> Password to connect mysql
+
+=back
+
+=head2 Required only using config file
+
+=over 4
+
+=item * -i | --in | --infile
+
+I<< (Required) >> a file in which a list of records to be inserted is written.
+
+=back
+
+=head2 Required only specifying table name and the number of records
+
+=over 4
+
+=item * -t | --table
+I<< (Required) >> target table name
+
+=item * -n | --number
+I<< (Required) >> the number of inserted records
+
+=item * --required
+I<< (Optional) >> a list of column names which require value. Multiple columns should be separated by comma(,), like 'col_1,col_2,col_3'. This option is useful when you want any value to be inserted to nullable columns.
 
 =back
 
