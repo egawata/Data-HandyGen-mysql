@@ -1001,7 +1001,7 @@ sub _add_user_valspec {
             }
 
         }
-        elsif ( $$val eq 'any' ) {
+        elsif ( ref $val eq 'SCALAR' and $$val eq 'any' ) {
             #  scalarref to string 'any'
             #  determine value randomly.
             $self->_valspec()->{$_table}{$_col}{any} = 1;
