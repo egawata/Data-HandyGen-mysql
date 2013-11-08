@@ -88,7 +88,7 @@ sub test_1 {
     my $hd = Test::HandyData::mysql->new(dbh => $dbh);
 
     my $cols = $hd->get_cols_requiring_value('table_test_1');
-    is_deeply($cols, ['id']);
+    is_deeply($cols, []);
 
     $hd->_set_user_valspec('table_test_1', { id => 200 });
     $cols = $hd->get_cols_requiring_value('table_test_1');
