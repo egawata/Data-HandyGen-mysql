@@ -363,17 +363,15 @@ sub process_table {
             }
         }
 
-        #  (2.5)If column default is available, use it.
-        if ( !defined($value) and defined($col_def->column_default) ) {
-            $value = $col_def->column_default;
-        }            
-
-
         #  (3)If user specified a value, use it.
         if ( !defined($value) and my $valspec_col = $self->_valspec()->{$table}{$col} ) {
             $value = $self->determine_value( $valspec_col );
         }
         
+        #  (3.5)If column default is available, use it.
+        if ( !defined($value) and defined($col_def->column_default) ) {
+            $value = $col_def->column_default;
+        }            
 
         #  (4)Otherwise, decide a value randomly.
         if ( !defined($value) ) {
