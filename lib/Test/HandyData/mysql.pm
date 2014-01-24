@@ -713,12 +713,19 @@ sub get_cols_requiring_value {
         #  When user specifies a rule of determining value, uses it every time.
         #  If not, checks if any column definition (like 'auto_increment') can be used
         #  as a rule.
-        unless ( defined( $self->_valspec()->{$table}{$col} ) ) {
+        if ( defined( $self->_valspec()->{$table}{$col} ) ) {
+            $self->_print_debug("column $col has a valspec, so value is needed");
+            push @cols, $col;
+        }
+        else {
 
             my $col_def = $table_def->column_def($col);
 
             #  we do not need to specify a value of auto_increment column. Skip it.
-            next if $col_def->is_auto_increment;
+            if ( $col_def->is_auto_increment ) {
+                $self->_print_debug("column $col is auto_increment, so no need to assign value.");
+                next;
+            }
 
             #
             #  I used to believe that DEFAULT value could be used if exists, so 
@@ -730,14 +737,21 @@ sub get_cols_requiring_value {
             #  as the DEFAULT value.
             #  
             #  Skip only the column isn't a foreign key and has default value.
-            next if defined($col_def->column_default) and not $table_def->is_fk($col);
+            if ( defined($col_def->column_default) and not $table_def->is_fk($col) ) {
+                $self->_print_debug("column $col has default value and not FK, so no need to assign value");
+                next;
+            }
 
             #  When NULL value is accetable, skip the column.
-            next if $col_def->is_nullable eq 'YES';
+            if ( $col_def->is_nullable eq 'YES' ) {
+                $self->_print_debug("column $col is nullable, so no need to assign a value");
+                next;
+            }
 
+            $self->_print_debug("column $col needs a value");
+            push @cols, $col;
         }
 
-        push @cols, $col;
     }
 
     return wantarray ? @cols : [ @cols ];
