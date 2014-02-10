@@ -14,7 +14,18 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  blah blah blah
+DBI
+SQL::Maker
+Class::Accessor::Lite
+DateTime
+DBD::mysql
+Test::More
+Test::Exception
+Test::mysqld
+Test::Warn
+JSON
+YAML
+Getopt::Long
 
 COPYRIGHT AND LICENCE
 
