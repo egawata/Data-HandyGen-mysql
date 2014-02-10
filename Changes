@@ -1,6 +1,6 @@
-Revision history for Perl extension Test::HandyData::mysql.
+Revision history for Perl extension HandyDataGen::mysql.
 
 0.01  Tue May 14 02:17:33 2013
 	- original version; created by h2xs 1.23 with options
-		-AX --skip-exporter -b 5.008.001 -n Test::HandyData::mysql
+		-AX --skip-exporter -b 5.008.001 -n HandyDataGen::mysql
 

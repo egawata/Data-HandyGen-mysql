@@ -9,7 +9,7 @@ use Test::mysqld;
 use Test::Exception;
 
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 
@@ -17,15 +17,8 @@ main();
 exit(0);
 
 
-=pod
-
-valspec のテスト
-
-
-=cut
-
 sub main {
-    my $hd = Test::HandyData::mysql->new();
+    my $hd = HandyDataGen::mysql->new();
     
     #  get
     is_deeply($hd->_valspec(), {}, "Initial state (empty hash)");

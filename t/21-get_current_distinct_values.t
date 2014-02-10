@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
@@ -26,7 +26,7 @@ sub main {
                 $mysqld->dsn(dbname => 'test')
     ) or die $DBI::errstr;
     $dbh->{RaiseError} = 1;
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
 
 
     #  Write test code here.
@@ -99,7 +99,7 @@ sub test_limit {
     });
 
     #  Temporarily set 5 as a limit
-    $Test::HandyData::mysql::DISTINCT_VAL_FETCH_LIMIT = 5;
+    $HandyDataGen::mysql::DISTINCT_VAL_FETCH_LIMIT = 5;
 
     for ( 0, 1, 2, 3, 2, 4, 5, 6 ) {
         $hd->dbh->do(q{INSERT INTO table_limit (col4) VALUES (?)}, undef, $_);
@@ -109,7 +109,7 @@ sub test_limit {
     is(keys %$res, 5);
 
     #  Reset to default
-    $Test::HandyData::mysql::DISTINCT_VAL_FETCH_LIMIT = 100;
+    $HandyDataGen::mysql::DISTINCT_VAL_FETCH_LIMIT = 100;
 }
 
 

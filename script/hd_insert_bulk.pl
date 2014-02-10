@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 use DBI;
 use JSON qw(decode_json);
 use YAML;
@@ -17,7 +17,7 @@ exit(0);
 
 =head1 NAME
 
-hd_insert_bulk.pl - Inserts records into mysql tables, using Test::HandyData.
+hd_insert_bulk.pl - Inserts records into mysql tables, using HandyDataGen.
 
 
 =head1 VERSION
@@ -56,7 +56,7 @@ sub main {
         or die $DBI::errstr;
     $dbh->do("SET NAMES UTF8") unless $noutf8;
 
-    my $hd = Test::HandyData::mysql->new( dbh => $dbh, fk => 1, debug => $debug );
+    my $hd = HandyDataGen::mysql->new( dbh => $dbh, fk => 1, debug => $debug );
 
     eval {
         if ( $infile ) {
@@ -398,7 +398,7 @@ Patches are welcome.
 
 =head1 SEE ALSO
 
-L<Test::HandyData::mysql>
+L<HandyDataGen::mysql>
 L<hd_delete_all.pl>
 
 

@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
@@ -36,7 +36,7 @@ sub main {
     $dbh->do(q{INSERT INTO test (id, name) VALUES (300, 'Banana')});
     $dbh->do(q{INSERT INTO test (id, name) VALUES (0, 'Banana')});
     
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
    
     is(1, $hd->_value_exists_in_table_col('test', 'id', 0));
     is(1, $hd->_value_exists_in_table_col('test', 'id', 100));

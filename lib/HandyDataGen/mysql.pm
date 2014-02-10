@@ -1,4 +1,4 @@
-package Test::HandyData::mysql;
+package HandyDataGen::mysql;
 
 use strict;
 use warnings;
@@ -23,7 +23,6 @@ use DateTime;
 use Carp;
 use SQL::Maker;
 use DateTime;
-use Data::Dumper;
 use Class::Accessor::Lite (
     new     => 1,
     rw      => [
@@ -34,11 +33,11 @@ use Class::Accessor::Lite (
     ro      => [
         'inserted',     #  All inserted ids
         'defs',         #  Table definitions
-                        #    $self->defs->{ $table_name } = (Test::HandyData::mysql::TableDef object)
+                        #    $self->defs->{ $table_name } = (HandyDataGen::mysql::TableDef object)
     ],
 );
 
-use Test::HandyData::mysql::TableDef;
+use HandyDataGen::mysql::TableDef;
 
 
 ###############
@@ -83,22 +82,22 @@ my %VALUE_DEF_FUNC = (
 
 =head1 NAME
 
-Test::HandyData::mysql - Generates test data for mysql easily.
+HandyDataGen::mysql - Generates test data for mysql easily.
 
 
 =head1 VERSION
 
-This documentation refers to Test::HandyData::mysql version 0.0.1
+This documentation refers to HandyDataGen::mysql version 0.0.1
 
 
 =head1 SYNOPSIS
 
     use DBI;
-    use Test::HandyData::mysql;
+    use HandyDataGen::mysql;
        
     my $dbh = DBI->connect('dbi:mysql:test', 'user', 'pass');
     
-    my $hd = Test::HandyData::mysql->new( fk => 1 );
+    my $hd = HandyDataGen::mysql->new( fk => 1 );
     $hd->dbh($dbh);
      
     
@@ -142,7 +141,7 @@ This documentation refers to Test::HandyData::mysql version 0.0.1
     
         
     #  2.
-    #  Insert one row to 'item' with name = 'Banana'
+    #  Insert one row to 'item' with name = 'Banana'.
     #  category_id and price will be random values. 
     
     $id = $hd->insert('item', { name => 'Banana' });  #  Maybe $id == 2
@@ -160,7 +159,7 @@ This documentation refers to Test::HandyData::mysql version 0.0.1
     
      
     #  3.      
-    #  Insert one row to 'item' with category_id one of 10, 20 or 30 (selected randomly)  
+    #  Insert one row to 'item' with category_id one of 10, 20 or 30 (selected randomly).
     #  If table 'category' has no record with id = 10, 20 nor 30, 
     #  a record having one of those ids will be generated on 'category'.
     
@@ -195,9 +194,9 @@ When we test our product, sometimes we need to create test records, but generati
 =head1 METHODS 
 
 
-=head2 new(%params)
+=head2 new(dbh => $dbh, fk => $fk)
 
-Constructor.
+Constructor. I<dbh> is required to be specified at here, or by calling C<$obj->dbh($dbh)> later. I<fk> is optional.
 
 
 =head2 dbh($dbh)
@@ -207,7 +206,7 @@ set a database handle
 
 =head2 fk($flag)
 
-also creates records on other tables referred by foreign key columns in main table, if necessary. 
+If specified 1, it also creates records on other tables referred by foreign key columns in main table, if necessary.
 
 Default is 0 (doesn't add records to other tables), so if you want to use this functionality, you need to specify 1 explicitly.
 
@@ -254,14 +253,14 @@ You can specify values of each column(s) with $valspec, a hashref which keys are
 
 specifies a value of 'colname'
 
-    $handy->insert('table1', { id => 5 });      #  id will become 5
+    $hd->insert('table1', { id => 5 });      #  id will become 5
 
 
 =item * colname => [ $val1, $val2, ... ]
 
-value of 'colname' is decided as one of $val1, $val2, ... randomly.
+value of 'colname' will be randomly chosen from $val1, $val2, ...
 
-    $handy->insert('table1', { id => [ 10, 20, 30 ] })      #  id will become one of 10, 20 or 30
+    $hd->insert('table1', { id => [ 10, 20, 30 ] })      #  id will become one of 10, 20 or 30
 
 
 =item * colname => { random => [ $val1, $val2, ... ] }
@@ -736,7 +735,7 @@ sub get_cols_requiring_value {
             #  So I've changed the way assuming the user rule would be specified
             #  as the DEFAULT value.
             #  
-            #  Skip only the column isn't a foreign key and has default value.
+            #  Skip only when the column isn't a foreign key and has default value.
             if ( defined($col_def->column_default) and not $table_def->is_fk($col) ) {
                 $self->_print_debug("column $col has default value and not FK, so no need to assign value");
                 next;
@@ -762,7 +761,7 @@ sub _table_def {
     my ($self, $table) = @_;
 
     $self->{_table_def}{$table} 
-        ||= Test::HandyData::mysql::TableDef->new( dbh => $self->dbh, table_name => $table );
+        ||= HandyDataGen::mysql::TableDef->new( dbh => $self->dbh, table_name => $table );
 
     return $self->{_table_def}{$table};
 }
@@ -1129,7 +1128,7 @@ __END__
 
 There are still many limitations with this module. I'll fix them later.
 
-=head3 Only primary key with single column supported.
+=head3 Only primary key with single column is supported.
 
 Although it works when inserting a record into a table which primary key consists of multiple columns, C<< insert() >> won't return a value of primary key just inserted.
 
@@ -1159,7 +1158,7 @@ Takashi Egawa (C<< egawa.takashi at gmail com >>)
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c)2012-2013 Takashi Egawa (C<< egawa.takashi at gmail com >>). All rights reserved.
+Copyright (c)2012-2014 Takashi Egawa (C<< egawa.takashi at gmail com >>). All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.

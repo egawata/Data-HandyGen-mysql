@@ -1,7 +1,7 @@
 Changes
-lib/Test/HandyData/mysql.pm
-lib/Test/HandyData/mysql/ColumnDef.pm
-lib/Test/HandyData/mysql/TableDef.pm
+lib/HandyDataGen/mysql.pm
+lib/HandyDataGen/mysql/ColumnDef.pm
+lib/HandyDataGen/mysql/TableDef.pm
 Makefile.PL
 MANIFEST
 README
@@ -30,6 +30,7 @@ t/22-set_user_valspec.t
 t/23-add_user_valspec.t
 t/24-check_fk_check_status.t
 t/25-delete_all.t
+t/26-get_random_dt_range.t
 t/31-val_notsupported.t
 t/41-insert.t
 t/column_def/00-load.t
@@ -45,3 +46,4 @@ t/table_def/06-is_fk.t
 t/table_def/07-pk_columns.t
 t/table_def/09-def.t
 t/table_def/10-dbname.t
+xt/pod.t

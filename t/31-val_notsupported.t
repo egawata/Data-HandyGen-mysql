@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
@@ -34,7 +34,7 @@ sub main {
         )
     });
 
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
 
     my ($id, $row);
     SKIP: {

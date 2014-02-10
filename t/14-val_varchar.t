@@ -7,7 +7,7 @@ use Test::More tests => 14;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
@@ -36,9 +36,9 @@ sub main {
         )
     });
 
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
 
-    #  基本は 列名 +　'_' + ID
+    #  Basically, column names + '_' + ID
     $dbh->do(q{ALTER TABLE table_varchar AUTO_INCREMENT = 1});  #  next ID = 1
     my $id = $hd->insert('table_varchar');
 

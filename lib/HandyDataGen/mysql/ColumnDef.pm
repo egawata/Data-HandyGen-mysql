@@ -1,4 +1,4 @@
-package Test::HandyData::mysql::ColumnDef;
+package HandyDataGen::mysql::ColumnDef;
 
 use strict;
 use warnings;
@@ -8,19 +8,19 @@ use Carp;
 
 =head1 NAME
 
-Test::HandyData::mysql::ColumnDef - Manages one column definition 
+HandyDataGen::mysql::ColumnDef - Manages one column definition 
 
 
 =head1 VERSION
 
-This documentation refers to Test::HandyData::mysql::ColumnDef version 0.0.1
+This documentation refers to HandyDataGen::mysql::ColumnDef version 0.0.1
 
 
 =head1 SYNOPSIS
 
-    use Test::HandyData::mysql::ColumnDef;
+    use HandyDataGen::mysql::ColumnDef;
     
-    my $cd = Test::HandyData::mysql::ColumnDef->new('colname', %column_definition);
+    my $cd = HandyDataGen::mysql::ColumnDef->new('colname', %column_definition);
 
     #  true if 'colname' is auto_increment
     my $res = $cd->is_auto_increment();
@@ -31,7 +31,7 @@ This documentation refers to Test::HandyData::mysql::ColumnDef version 0.0.1
 
 =head1 CAUTION
 
-This module is not intended for use outside Test::HandyData. Its interface may be changed in the future.
+This module is not intended for use outside HandyDataGen. Its interface may be changed in the future.
 
 
 =head1 DESCRIPTION
@@ -142,7 +142,7 @@ Egawata
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c)2013 Egawata All rights reserved.
+Copyright (c)2013-2014 Egawata All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.

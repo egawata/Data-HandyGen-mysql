@@ -7,41 +7,28 @@ use Test::More tests => 5;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
 exit(0);
 
 
-=pod
-
-ID 列(primary key)のテスト
-
-ID は以下のケースを想定する。
-
-(0)insert() の呼び出し元メソッドで明示的に指定
-その値をそのまま使う。
-
-(1)単一列、整数型、auto_increment あり。
-auto_increment の値に従う
-
-(2)単一列、整数型、auto_increment なし。
-既存の最大値 + 1 とする。
-初回のみ、最大値を取得するクエリを発行する。その値を保持しておき、次回以降はその値をインクリメントしながら使用する。
-
-(3)単一列、文字列型
-必ずuniqueとなる2文字の文字列を生成し prefix とする。キー全体は (prefix)_(通し番号)のようにする。
-ただし文字数が足りない場合は、(prefix)+(文字) (後ろの文字は、利用可能な文字を順番に使用していく)
-(後日実装)
-
-
-(4)複合key(型は問わない)
-すべてをランダムに生成する。
-(後日実装)
-
-
-=cut
+#
+# Tests of ID column (primary key)
+#
+# This script tests the following cases.
+#
+# (1)Explicitly specifies a value of primary key. The values will be assigned properly.
+#
+# (2)A primary key consisted of single integer column with auto_increment attribute. The value will be assigned by auto_increment.
+#
+# (3)A primary key consisted of single integer column without auto_increment attribute. The value will be max value of existing primary key plus 1. Only at the first insert to the table, an SQL statement will be issued to retrieve max value of primary keys. The max value will be preserved, and it is incremented and used since then.
+#
+# (4)A primary key consisted of single string column. (This functionarity is not implemented yet, so I will write a test later.)
+#
+# (5)A primary key consisted of multiple columns (any types). (This functionarity is not implemented yet, so I will write a test later.)
+#
 
 sub main {
 
@@ -60,18 +47,7 @@ sub main {
 }
 
 
-=pod test_0
-
-以下のケースをテストする
-
-(0)insert() の呼び出し元メソッドで明示的に指定
-その値をそのまま使う。
-
-(1)単一列、整数型、auto_increment あり。
-auto_increment の値に従う
-
-=cut
-
+# Test case (1) and (2) are tested here.
 sub test_0 {
     my ($dbh) = @_;
 
@@ -83,7 +59,7 @@ sub test_0 {
     });
     $dbh->do(q{ALTER TABLE table_test_0 AUTO_INCREMENT = 100});  #  next ID = 100
 
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
 
     #  specifies key value
     $hd->_set_user_valspec('table_test_0', { id => 99 });
@@ -105,6 +81,7 @@ sub test_0 {
 }
 
 
+#  Test case (3) is tested here.
 sub test_1 {
     my ($dbh) = @_;
 
@@ -115,7 +92,7 @@ sub test_1 {
         )
     });
 
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
     my $id = $hd->get_id('table_test_1');
     ok($id =~ /^\d+$/, "no auto_increment column. result id = $id");
 }

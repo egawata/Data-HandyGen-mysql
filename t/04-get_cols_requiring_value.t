@@ -7,20 +7,16 @@ use Test::More tests => 6;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
 exit(0);
 
 
-=pod
-
-get_cols_requiring_value のテスト
-
-
-=cut
-
+#
+#  Test for get_cols_requiring_value.
+#
 sub main {
 
     my $mysqld = Test::mysqld->new( my_cnf => { 'skip-networking' => '' } )
@@ -39,14 +35,9 @@ sub main {
 }
 
 
-=pod test_0
-
-auto_increment 列は結果から除外される。
-ただしユーザから指定があれば結果に含まれる。
-
-
-=cut
-
+#
+#  A column with auto_increment attribute is considered that it does not require value, unless its value is explicitly specified by user.
+#
 sub test_0 {
     my ($dbh) = @_;
 
@@ -56,7 +47,7 @@ sub test_0 {
         )
     });
 
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
 
     my $cols = $hd->get_cols_requiring_value('table_test_0');
     is_deeply($cols, []);
@@ -67,15 +58,9 @@ sub test_0 {
 }
 
 
-=pod test_1
-
-defalut 値が設定されていればそれを使用するので、結果から除外する。
-ただしユーザから指定された場合はそれを使用するので、結果に含まれる。
-
-* 外部キー制約がある場合に不具合が出るため、デフォルト値でのユーザ指定があった場合と同様に処理
-
-=cut
-
+#
+#  A column which has DEFAULT is considered that it does not require value, unless its value is explicitly specified by user.
+#
 sub test_1 {
     my ($dbh) = @_;
 
@@ -85,7 +70,7 @@ sub test_1 {
         )
     });
 
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
 
     my $cols = $hd->get_cols_requiring_value('table_test_1');
     is_deeply($cols, []);
@@ -97,13 +82,9 @@ sub test_1 {
 
 
 
-=pod test_2
-
-NULLABLE 列であれば、NULLのままにしておくため、結果から除外する。
-ただしユーザから指定された場合はそれを使用するので、結果に含める。
-
-=cut
-
+#  
+#  A 'NULLABLE' column is considered that it does not require value, unless user specifies its value explicitly.
+#
 sub test_2 {
     my ($dbh) = @_;
 
@@ -113,7 +94,7 @@ sub test_2 {
         )
     });
 
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
 
     my $cols = $hd->get_cols_requiring_value('table_test_2');
     is_deeply($cols, []);

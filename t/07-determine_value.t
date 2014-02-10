@@ -6,22 +6,15 @@ use warnings;
 use Test::More tests => 20;
 use Test::Exception;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
 exit(0);
 
 
-=pod
-
-determine_value のテスト
-
-
-=cut
-
 sub main {
-    my $hd = Test::HandyData::mysql->new();
+    my $hd = HandyDataGen::mysql->new();
 
     test_random($hd);
     test_fixval($hd);

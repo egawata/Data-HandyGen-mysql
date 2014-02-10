@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
@@ -53,7 +53,7 @@ sub test_single_fk {
         )
     });
 
-    my $td = Test::HandyData::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
+    my $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
     is($td->is_fk('id'), undef);
     is_deeply($td->is_fk('col1'), { table => 'foreign1', column => 'id' });
 
@@ -79,7 +79,7 @@ sub test_multi_col_fk {
         )
     });
 
-    my $td = Test::HandyData::mysql::TableDef->new(dbh => $dbh, table_name => 'table2');
+    my $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table2');
     is($td->is_fk('id'), undef);
     is_deeply($td->is_fk('col1'), { table => 'foreign2', column => 'id1' });
     is_deeply($td->is_fk('col2'), { table => 'foreign2', column => 'id2' });
@@ -109,7 +109,7 @@ sub test_many_fk {
         )
     });
     
-    my $td = Test::HandyData::mysql::TableDef->new(dbh => $dbh, table_name => 'table3');
+    my $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table3');
     is($td->is_fk('id'), undef);
    
     is(ref($td->is_fk('col1')), 'ARRAY'); 

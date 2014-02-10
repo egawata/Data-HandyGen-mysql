@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
@@ -26,7 +26,7 @@ sub main {
                 $mysqld->dsn(dbname => 'test')
     ) or die $DBI::errstr;
     $dbh->{RaiseError} = 1;
-    my $hd = Test::HandyData::mysql->new(dbh => $dbh);
+    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
 
     test_with_valspec($dbh, $hd);
     test_without_valspec($dbh, $hd);
@@ -56,16 +56,16 @@ sub test_with_valspec {
     });
     $dbh->do(q{INSERT INTO table1 (id) VALUES (100)});
 
-    #  値の決定方法に指定があり、かつ参照先レコードがすでに存在する場合
-    #    -> ID は指定に従う。参照先テーブルにレコードは追加しない。
+    #  When user specifies its value explicitly, and referenced record already exists
+    #    -> the user-specified value will be used. No record will be inserted to referenced table.
     $hd->_set_user_valspec('table2', { table1_id => 100 });
     is($hd->determine_fk_value('table2', 'table1_id', { table => 'table1', column => 'id' }), 100);
     is(rowcount($dbh, 'table1'), 1);
     select_all($dbh, 'table1');
     select_all($dbh, 'table2');
 
-    #  値の決定方法に指定があり、かつ参照先レコードが存在しない場合
-    #    -> ID は指定に従う。さらにそのIDを持つレコードを参照先テーブルに追加する。
+    #  When user specifies its value explicitly, and referenced record does not exist yet
+    #    -> the user-specified value will be usedm and a referenced record will be inserted.
     $hd->_set_user_valspec('table2', { table1_id => 200 });
     is($hd->determine_fk_value('table2', 'table1_id', { table => 'table1', column => 'id' }), 200);
     is(rowcount($dbh, 'table1'), 2);
@@ -96,9 +96,9 @@ sub test_without_valspec {
         )
     });
 
-    #  値の決定方法に指定がなく、かつ参照先テーブルにレコードが1件も存在しない場合
-    #    -> ID を適当に決めて参照先テーブルにレコード追加。
-    #       そのIDを参照元の値とする。
+    #  When user does not specify its value, and no record exists in its referenced table
+    #    -> ID is determined randomly and a record with the ID will be inserted to the referenced table.
+    #    -> The ID is used as the value of referencing column.
     $hd->_set_user_valspec('table12', {});
     my $refid = $hd->determine_fk_value('table12', 'table11_id', { table => 'table11', column => 'id' });
     is(rowcount($dbh, 'table11'), 1);    #  レコードが追加された
@@ -133,9 +133,8 @@ sub test_without_valspec_2 {
     $dbh->do(q{INSERT INTO table21 (id) VALUES (200)});
 
 
-    #  値の決定方法に指定がなく、かつ参照先テーブルにレコードが数件存在する場合
-    #    -> 参照先テーブルにあるレコードの中から1件を選び、
-    #       そのIDを参照元の値とする。
+    #  When user does not specify its value, and some records exists in its referencing table
+    #    -> A record will be picked up from referenced table, and its ID will be the value of the referencing column.
     $hd->_set_user_valspec('table22', {});
     my $refid = $hd->determine_fk_value('table22', 'table21_id', { table => 'table21', column => 'id' });
     is(rowcount($dbh, 'table21'), 2);    #  レコードは追加されない

@@ -8,23 +8,16 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use Test::HandyData::mysql;
+use HandyDataGen::mysql;
 
 
 main();
 exit(0);
 
 
-=pod
-
-add_inserted_id のテスト
-
-
-=cut
-
 sub main {
 
-    my $hd = Test::HandyData::mysql->new();
+    my $hd = HandyDataGen::mysql->new();
 
     #  invalid number of args 
     dies_ok { $hd->add_inserted_id() };
