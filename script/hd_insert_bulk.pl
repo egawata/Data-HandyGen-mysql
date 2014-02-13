@@ -158,7 +158,7 @@ sub insert {
 
 
 sub usage {
-    print <<USAGE;
+    print STDERR <<USAGE;
 Options:
     -d(--dbname)      : database name
     -h(--host)        : host
@@ -377,7 +377,11 @@ It will output all table names and IDs to STDOUT with YAML format like the follo
 
 You can use those values to delete test data. If you redirect the output to a file, you may later pass it to hd_delete_all.pl (included in this package) as an argument to delete those records.
 
-    $ hd_delete_all inserted.yml
+    $ hd_insert_bulk.pl --infile example.json -d testdb -u myuser -p mypasswd > inserted.yml
+    
+    #  ...later
+
+    $ hd_delete_all inserted.yml --i inserted.yml -d testdb -u myuser -p mypasswd
     (This will delete all records above)
 
 

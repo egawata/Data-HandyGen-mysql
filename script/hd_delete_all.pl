@@ -29,7 +29,7 @@ sub main {
         'v|verbose'     => \$verbose,
     );
     
-    $infile or usage();
+    $infile and $dbname or usage();
     
     my $dsn = "dbi:mysql:dbname=$dbname";
     $host and $dsn .= ";host=$host";

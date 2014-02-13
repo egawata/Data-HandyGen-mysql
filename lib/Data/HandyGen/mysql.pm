@@ -176,7 +176,14 @@ This documentation refers to Data::HandyGen::mysql version 0.0.1
     #  [category]
     #           id: 20
     #         name: name_20
-    
+
+
+    #  4.
+    #  If you're interested also in category name, do this.
+
+    $cat_id = $hd->insert('category', { name => 'Fruit' });
+    $item_id = $hd->insert('item', { category_id => $cat_id, name => 'Coconut' });    
+
    
     #  Delete all records inserted by $hd
     $hd->delete_all();     
@@ -197,7 +204,7 @@ When we test our product, sometimes we need to create test records, but generati
 
 =head2 new(dbh => $dbh, fk => $fk)
 
-Constructor. I<dbh> is required to be specified at here, or by calling C<$obj->dbh($dbh)> later. I<fk> is optional.
+Constructor. C<dbh> is required to be specified at here, or by calling C<< $obj->dbh($dbh) >> later. C<fk> is optional.
 
 
 =head2 dbh($dbh)
@@ -287,20 +294,22 @@ value of 'colname' is determined between $start_datetime and $end_datetime ($sta
 
 =back
 
-=head3 column name
-
-If you want to specify values of other tables (maybe referenced by foreign key), join table name and column name with dot(.)
-
-    $valspec = {
-        column1                  => 50,           #  Column in the same table
-        'another_table.column2'  => [10, 20, 30]  #  Column in referenced table
-    }
-
 =head3 return value
 
 Returns a value of primary key. (Only when primary key exists and it contains only a single column. Otherwise returns undef.)
 
 =cut
+
+#  XXX: I commented out lines below, because this function does not work properly.
+# 
+#=head3 column name in other tables
+#
+#If you want to specify values of other tables (maybe referenced by foreign key), join table name and column name with dot(.)
+#
+#    $valspec = {
+#        column1                  => 50,           #  Column in the same table
+#        'another_table.column2'  => [10, 20, 30]  #  Column in referenced table
+#    }
 
 sub insert {
     my ($self, $table_name, $table_valspec) = @_;
@@ -923,7 +932,7 @@ sub _get_current_distinct_values {
     my $current;
 
     #  At first, I tried to cache distinct values, but when user delete records, 
-    #  those cached values are incorrect, and Test::Handy data has no idea
+    #  those cached values are incorrect, and this module has no idea
     #  which records have been already deleted.
     #  So I decide not to cache distinct values and query them every time. 
 
@@ -1035,7 +1044,7 @@ sub _add_user_valspec {
 
 =head2 inserted()
 
-Returns all primary keys of inserted records by this instance. Return value is a hashref like this:
+Returns all primary keys of inserted records by this instance. Returned value is a hashref like this:
 
     my $ret = $hd->inserted();
     
@@ -1130,6 +1139,9 @@ __END__
 
 There are still many limitations with this module. I'll fix them later.
 
+Please report problems to Egawata C<< (egawa.takashi at gmail com) >>
+Patches are welcome.
+
 =head3 Only primary key with single column is supported.
 
 Although it works when inserting a record into a table which primary key consists of multiple columns, C<< insert() >> won't return a value of primary key just inserted.
@@ -1149,9 +1161,6 @@ For now, if you want to use this module with such a table, specify those values 
 
 For example, C<< blob >> or C<< set >> aren't supported. The values of those columns won't be auto-generated.
 
-
-Please report problems to Egawata C<< (egawa.takashi at gmail com) >>
-Patches are welcome.
 
 =head1 AUTHOR
 
