@@ -3,6 +3,9 @@ package Data::HandyGen::mysql::TableDef;
 use strict;
 use warnings;
 
+our $VERSION = '0.0.1';
+$VERSION = eval $VERSION;
+
 use Carp;
 
 use Data::HandyGen::mysql::ColumnDef;
