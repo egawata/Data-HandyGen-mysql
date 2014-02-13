@@ -23,6 +23,7 @@ use DateTime;
 use Carp;
 use SQL::Maker;
 use DateTime;
+use Data::Dumper;
 use Class::Accessor::Lite (
     new     => 1,
     rw      => [
@@ -319,7 +320,7 @@ sub process_table {
     #  Reads an additional spec
     $tmpl_valspec 
         and $self->_add_user_valspec($table, $tmpl_valspec);
-
+    $self->_print_debug("tmpl_valspec : " . Dumper($self->_valspec()));
 
     my $table_def = $self->_table_def($table);
 
@@ -341,7 +342,7 @@ sub process_table {
         my $value;
     
         #  (1)Primary key, and a value is specified by user.
-        if ( $table_def->is_pk($col) and $real_id ) {
+        if ( $table_def->is_pk($col) and defined($real_id) ) {
             $values{$col} = $real_id;
             next;
         }
@@ -363,7 +364,7 @@ sub process_table {
         }
 
         #  (3)If user specified a value, use it.
-        if ( !defined($value) and my $valspec_col = $self->_valspec()->{$table}{$col} ) {
+        if ( !defined($value) and defined( my $valspec_col = $self->_valspec()->{$table}{$col} ) ) {
             $value = $self->determine_value( $valspec_col );
         }
         
@@ -556,6 +557,7 @@ sub _value_exists_in_table_col {
     $sth->execute(@binds);
     my $row = $sth->fetchrow_arrayref();
 
+    $self->_print_debug("Record count : $row->[0]");
     return $row->[0];       #  count(*)
 }
 
@@ -593,7 +595,7 @@ sub determine_fk_value {
         $self->_add_record_if_not_exist($ref_table, $ref_col, $value);
 
     }
-    elsif ( my $column_default = $self->_table_def($table)->column_def($col)->column_default ) {
+    elsif ( defined( my $column_default = $self->_table_def($table)->column_def($col)->column_default ) ) {
         $self->_print_debug("Column default is specified. value = $column_default");
         $value = $column_default;
         $self->_add_record_if_not_exist($ref_table, $ref_col, $value);
@@ -658,8 +660,8 @@ sub get_id {
         #  Verifies if PK value can be determined by the user-specified rule.
         #  If possible, $real_id will be a value determined by the rule.
         if (    $self->_valspec()->{$table} 
-                and $self->_valspec()->{$table}{$col} 
-                and $real_id = $self->determine_value( $self->_valspec()->{$table}{$col} ) 
+                and defined( $self->_valspec()->{$table}{$col} )
+                and defined( $real_id = $self->determine_value( $self->_valspec()->{$table}{$col} ) )
         ) 
         {
 
