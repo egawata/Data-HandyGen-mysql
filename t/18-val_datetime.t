@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 my $NUM_TESTS = 1000;
 my $NUM_SAMPLES = 20;
@@ -29,7 +29,7 @@ sub main {
                 $mysqld->dsn(dbname => 'test')
     ) or die $DBI::errstr;
     $dbh->{RaiseError} = 1;
-    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
+    my $hd = Data::HandyGen::mysql->new(dbh => $dbh);
 
 
     #  Write test code here.

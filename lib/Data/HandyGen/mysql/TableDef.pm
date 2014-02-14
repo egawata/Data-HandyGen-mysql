@@ -1,36 +1,36 @@
-package HandyDataGen::mysql::TableDef;
+package Data::HandyGen::mysql::TableDef;
 
 use strict;
 use warnings;
 
 use Carp;
 
-use HandyDataGen::mysql::ColumnDef;
+use Data::HandyGen::mysql::ColumnDef;
 
 
 =head1 NAME
 
-HandyDataGen::mysql::TableDef - Manages table definition in mysql
+Data::HandyGen::mysql::TableDef - Manages table definition in mysql
 
 
 =head1 VERSION
 
-This documentation refers to HandyDataGen::mysql::TableDef version 0.0.1
+This documentation refers to Data::HandyGen::mysql::TableDef version 0.0.1
 
 
 =head1 SYNOPSIS
 
-    use HandyDataGen::mysql::TableDef;
+    use Data::HandyGen::mysql::TableDef;
     use DBI;
    
     my $dbh = DBI->connect('dbi:mysql:dbname=testdb', 'username', 'password');     
-    my $table_def = HandyDataGen::mysql::TableDef->new( dbh => $dbh, table_name => 'table1');
+    my $table_def = Data::HandyGen::mysql::TableDef->new( dbh => $dbh, table_name => 'table1');
 
 
 
 =head1 CAUTION
 
-This module is not intended for use outside HandyDataGen. Its interface may be changed in the future.
+This module is not intended for use outside Data::HandyGen. Its interface may be changed in the future.
 
 
 =head1 DESCRIPTION
@@ -338,7 +338,7 @@ sub column_def {
 
     $self->{column_def} ||= {};
 
-    my $col_def = HandyDataGen::mysql::ColumnDef->new($column_name, $self->def->{$column_name});
+    my $col_def = Data::HandyGen::mysql::ColumnDef->new($column_name, $self->def->{$column_name});
     $self->{column_def}{$column_name} = $col_def;
 
     return $self->{column_def}{$column_name};    

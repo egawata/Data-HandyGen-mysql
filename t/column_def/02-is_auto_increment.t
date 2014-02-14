@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -45,19 +45,19 @@ sub main {
 
     my ($td, $def, $cd);
 
-    $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
+    $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
     $def = $td->def();
-    $cd = HandyDataGen::mysql::ColumnDef->new('id', $def->{id});
+    $cd = Data::HandyGen::mysql::ColumnDef->new('id', $def->{id});
     is($cd->is_auto_increment(), 1);
 
-    $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table2');
+    $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table2');
     $def = $td->def();
-    $cd = HandyDataGen::mysql::ColumnDef->new('id', $def->{id});
+    $cd = Data::HandyGen::mysql::ColumnDef->new('id', $def->{id});
     is($cd->is_auto_increment(), 0);
 
-    $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table3');
+    $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table3');
     $def = $td->def();
-    $cd = HandyDataGen::mysql::ColumnDef->new('id', $def->{id});
+    $cd = Data::HandyGen::mysql::ColumnDef->new('id', $def->{id});
     is($cd->is_auto_increment(), 0);
 
 

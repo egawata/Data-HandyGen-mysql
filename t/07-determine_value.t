@@ -6,7 +6,7 @@ use warnings;
 use Test::More tests => 20;
 use Test::Exception;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -14,7 +14,7 @@ exit(0);
 
 
 sub main {
-    my $hd = HandyDataGen::mysql->new();
+    my $hd = Data::HandyGen::mysql->new();
 
     test_random($hd);
     test_fixval($hd);

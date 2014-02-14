@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -19,7 +19,7 @@ exit(0);
 
 sub main {
     
-    my $hd = HandyDataGen::mysql->new();
+    my $hd = Data::HandyGen::mysql->new();
 
     test_this_table($hd);
     test_another_table($hd);

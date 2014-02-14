@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use HandyDataGen::mysql::TableDef;
+use Data::HandyGen::mysql::TableDef;
 
 use Test::More tests => 4;
 use Test::mysqld;
@@ -35,10 +35,10 @@ sub test {
         )
     });
 
-    my $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table_test_0');
+    my $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table_test_0');
     my $col_def = $td->column_def('test1');
 
-    isa_ok($col_def, 'HandyDataGen::mysql::ColumnDef');
+    isa_ok($col_def, 'Data::HandyGen::mysql::ColumnDef');
 }
 
 
@@ -53,7 +53,7 @@ sub test_is_auto_increment {
         )
     });
 
-    my $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table_test_1');
+    my $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table_test_1');
 
     #  'id' has auto_increment attribute.
     my $col_def = $td->column_def('id');

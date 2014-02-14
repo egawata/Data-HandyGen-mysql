@@ -7,7 +7,7 @@ use Test::More tests => 5;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -59,7 +59,7 @@ sub test_0 {
     });
     $dbh->do(q{ALTER TABLE table_test_0 AUTO_INCREMENT = 100});  #  next ID = 100
 
-    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
+    my $hd = Data::HandyGen::mysql->new(dbh => $dbh);
 
     #  specifies key value
     $hd->_set_user_valspec('table_test_0', { id => 99 });
@@ -92,7 +92,7 @@ sub test_1 {
         )
     });
 
-    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
+    my $hd = Data::HandyGen::mysql->new(dbh => $dbh);
     my $id = $hd->get_id('table_test_1');
     ok($id =~ /^\d+$/, "no auto_increment column. result id = $id");
 }

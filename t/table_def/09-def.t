@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -64,7 +64,7 @@ sub main {
         )
     });
 
-    my $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
+    my $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
 
     for ( qw/ _get_table_definition def / ) {
         my $def = $td->$_();
@@ -103,7 +103,7 @@ sub main {
         is($def->{prec2}{NUMERIC_SCALE}, 5);
     }
 
-    $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table2');
+    $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table2');
     for ( qw/ _get_table_definition def / ) {
         my $def = $td->$_();
         

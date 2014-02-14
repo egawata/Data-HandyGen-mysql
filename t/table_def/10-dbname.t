@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -27,7 +27,7 @@ sub main {
     ) or die $DBI::errstr;
     $dbh->{RaiseError} = 1;
 
-    my $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table => 'table1');
+    my $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table => 'table1');
     is($td->_dbname(), 'test');
 
     $dbh->disconnect();

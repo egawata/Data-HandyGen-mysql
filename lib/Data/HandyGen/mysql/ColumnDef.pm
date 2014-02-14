@@ -1,4 +1,4 @@
-package HandyDataGen::mysql::ColumnDef;
+package Data::HandyGen::mysql::ColumnDef;
 
 use strict;
 use warnings;
@@ -8,19 +8,19 @@ use Carp;
 
 =head1 NAME
 
-HandyDataGen::mysql::ColumnDef - Manages one column definition 
+Data::HandyGen::mysql::ColumnDef - Manages one column definition 
 
 
 =head1 VERSION
 
-This documentation refers to HandyDataGen::mysql::ColumnDef version 0.0.1
+This documentation refers to Data::HandyGen::mysql::ColumnDef version 0.0.1
 
 
 =head1 SYNOPSIS
 
-    use HandyDataGen::mysql::ColumnDef;
+    use Data::HandyGen::mysql::ColumnDef;
     
-    my $cd = HandyDataGen::mysql::ColumnDef->new('colname', %column_definition);
+    my $cd = Data::HandyGen::mysql::ColumnDef->new('colname', %column_definition);
 
     #  true if 'colname' is auto_increment
     my $res = $cd->is_auto_increment();
@@ -31,7 +31,7 @@ This documentation refers to HandyDataGen::mysql::ColumnDef version 0.0.1
 
 =head1 CAUTION
 
-This module is not intended for use outside HandyDataGen. Its interface may be changed in the future.
+This module is not intended for use outside Data::HandyGen. Its interface may be changed in the future.
 
 
 =head1 DESCRIPTION

@@ -1,7 +1,7 @@
 Changes
-lib/HandyDataGen/mysql.pm
-lib/HandyDataGen/mysql/ColumnDef.pm
-lib/HandyDataGen/mysql/TableDef.pm
+lib/Data/HandyGen/mysql.pm
+lib/Data/HandyGen/mysql/ColumnDef.pm
+lib/Data/HandyGen/mysql/TableDef.pm
 Makefile.PL
 MANIFEST
 README

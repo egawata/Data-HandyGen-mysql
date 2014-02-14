@@ -9,7 +9,7 @@ use Test::mysqld;
 use Test::Exception;
 
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 
@@ -18,7 +18,7 @@ exit(0);
 
 
 sub main {
-    my $hd = HandyDataGen::mysql->new();
+    my $hd = Data::HandyGen::mysql->new();
     
     #  get
     is_deeply($hd->_valspec(), {}, "Initial state (empty hash)");

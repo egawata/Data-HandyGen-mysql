@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql::TableDef;
+use Data::HandyGen::mysql::TableDef;
 
 
 main();
@@ -29,8 +29,8 @@ sub main {
 
 
     #  Empty argument
-    my $td = HandyDataGen::mysql::TableDef->new();
-    isa_ok($td, 'HandyDataGen::mysql::TableDef');
+    my $td = Data::HandyGen::mysql::TableDef->new();
+    isa_ok($td, 'Data::HandyGen::mysql::TableDef');
     is($td->dbh(), undef);
     is($td->table_name(), undef);
     throws_ok { $td->_get_dbh() } qr/dbh is empty. You should set dbh beforehand/;
@@ -38,8 +38,8 @@ sub main {
     
 
     #  Argument is hash
-    $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
-    isa_ok($td, 'HandyDataGen::mysql::TableDef');
+    $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
+    isa_ok($td, 'Data::HandyGen::mysql::TableDef');
     isa_ok($td->dbh(), 'DBI::db');
     is($td->table_name(), 'table1');
 
@@ -51,8 +51,8 @@ sub main {
 
 
     #  Argument is hashref
-    $td = HandyDataGen::mysql::TableDef->new( { dbh => $dbh, table_name => 'table1' } );
-    isa_ok($td, 'HandyDataGen::mysql::TableDef');
+    $td = Data::HandyGen::mysql::TableDef->new( { dbh => $dbh, table_name => 'table1' } );
+    isa_ok($td, 'Data::HandyGen::mysql::TableDef');
     isa_ok($td->dbh(), 'DBI::db');
     is($td->table_name(), 'table1');
 

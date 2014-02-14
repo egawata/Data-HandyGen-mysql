@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -34,7 +34,7 @@ sub main {
         ) default charset utf8
     });
 
-    my $td = HandyDataGen::mysql::TableDef->new( dbh => $dbh, table_name => 'table1' );
+    my $td = Data::HandyGen::mysql::TableDef->new( dbh => $dbh, table_name => 'table1' );
     my %exp = (
         id      => {
             table_catalog =>  'def',
@@ -80,7 +80,7 @@ sub main {
 
     for my $col ( qw/ id col1 / ) {
         my $def = $td->def()->{$col};
-        my $cd = HandyDataGen::mysql::ColumnDef->new($col, $def);
+        my $cd = Data::HandyGen::mysql::ColumnDef->new($col, $def);
         
         for ( keys %{ $exp{$col} } ) {
             my $val;

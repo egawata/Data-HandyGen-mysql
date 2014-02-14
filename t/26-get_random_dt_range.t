@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -39,6 +39,6 @@ sub main {
 
 
 sub get_random_dt_range {
-    HandyDataGen::mysql::_get_random_dt_range(@_);
+    Data::HandyGen::mysql::_get_random_dt_range(@_);
 }
 

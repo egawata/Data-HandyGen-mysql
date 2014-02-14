@@ -10,7 +10,7 @@ use DBI;
 plan tests => 2;
 
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -29,7 +29,7 @@ sub main {
     
     $dbh->do("CREATE TABLE table_int (val integer)");
 
-    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
+    my $hd = Data::HandyGen::mysql->new(dbh => $dbh);
     my $desc = $hd->_table_def('table_int')->def;
 
     is(keys %$desc, 1, 'table_int: num of columns');

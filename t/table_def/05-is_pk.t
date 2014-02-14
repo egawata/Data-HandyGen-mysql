@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql::TableDef;
+use Data::HandyGen::mysql::TableDef;
 
 
 main();
@@ -34,7 +34,7 @@ sub main {
         )
     });
 
-    my $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
+    my $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
     is($td->is_pk('id'), 1);
     is($td->is_pk('col1'), 0);
 
@@ -47,7 +47,7 @@ sub main {
         )
     });
 
-    $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table2');
+    $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table2');
     is($td->is_pk('id1'), 1);
     is($td->is_pk('id2'), 1);
     is($td->is_pk('col1'), 0);
@@ -58,7 +58,7 @@ sub main {
             col1 integer
         )
     });
-    $td = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table3');
+    $td = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table3');
     is($td->is_pk('id'), 0);
     is($td->is_pk('col1'), 0);
 

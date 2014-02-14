@@ -8,7 +8,7 @@ use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -17,7 +17,7 @@ exit(0);
 
 sub main {
 
-    my $hd = HandyDataGen::mysql->new();
+    my $hd = Data::HandyGen::mysql->new();
 
     #  invalid number of args 
     dies_ok { $hd->add_inserted_id() };

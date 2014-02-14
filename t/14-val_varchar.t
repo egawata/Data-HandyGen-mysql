@@ -7,7 +7,7 @@ use Test::More tests => 14;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
 
 main();
@@ -36,7 +36,7 @@ sub main {
         )
     });
 
-    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
+    my $hd = Data::HandyGen::mysql->new(dbh => $dbh);
 
     #  Basically, column names + '_' + ID
     $dbh->do(q{ALTER TABLE table_varchar AUTO_INCREMENT = 1});  #  next ID = 1

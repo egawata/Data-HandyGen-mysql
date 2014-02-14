@@ -3,14 +3,14 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 4;
 use Test::Exception;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql;
+use Data::HandyGen::mysql;
 
-my $CLASS_NAME = 'HandyDataGen::mysql::TableDef';
+my $CLASS_NAME = 'Data::HandyGen::mysql::TableDef';
 
 main();
 exit(0);
@@ -27,7 +27,7 @@ sub main {
                 $mysqld->dsn(dbname => 'test')
     ) or die $DBI::errstr;
     $dbh->{RaiseError} = 1;
-    my $hd = HandyDataGen::mysql->new(dbh => $dbh);
+    my $hd = Data::HandyGen::mysql->new(dbh => $dbh);
 
     $dbh->do(q{CREATE TABLE table1 (
         id integer primary key auto_increment,
@@ -48,7 +48,5 @@ sub main {
 
 
     $dbh->disconnect();
-
-    done_testing();
 }
 

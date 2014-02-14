@@ -5,7 +5,7 @@ use warnings;
 
 use DBI;
 use YAML qw(LoadFile);
-use HandyDataGen::mysql::TableDef;
+use Data::HandyGen::mysql::TableDef;
 use Getopt::Long;
 use SQL::Maker;
 
@@ -50,7 +50,7 @@ sub main {
             $dbh->do(q{SET FOREIGN_KEY_CHECKS = 0});
             for my $table ( keys %$inserted ) {
                 my $ids = $inserted->{$table};
-                my $table_def = HandyDataGen::mysql::TableDef->new( dbh => $dbh, table_name => $table );
+                my $table_def = Data::HandyGen::mysql::TableDef->new( dbh => $dbh, table_name => $table );
                 my $pk_column = $table_def->pk_columns()->[0];
                 
                 for my $id (@$ids) {
@@ -182,7 +182,7 @@ Patches are welcome.
 
 =head1 SEE ALSO
 
-L<HandyDataGen::mysql>
+L<Data::HandyGen::mysql>
 L<hd_insert_bulk.pl>
 
  

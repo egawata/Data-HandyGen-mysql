@@ -7,7 +7,7 @@ use Test::More;
 use DBI;
 use Test::mysqld;
 
-use HandyDataGen::mysql::TableDef;
+use Data::HandyGen::mysql::TableDef;
 
 
 main();
@@ -34,7 +34,7 @@ sub main {
         )
     });
 
-    my $table_def = HandyDataGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
+    my $table_def = Data::HandyGen::mysql::TableDef->new(dbh => $dbh, table_name => 'table1');
     my $colnames = $table_def->colnames();
 
     is_deeply([sort(@$colnames)], [ qw/ col1 col2 id / ]);

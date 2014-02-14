@@ -1,4 +1,4 @@
-package HandyDataGen::mysql;
+package Data::HandyGen::mysql;
 
 use strict;
 use warnings;
@@ -34,11 +34,11 @@ use Class::Accessor::Lite (
     ro      => [
         'inserted',     #  All inserted ids
         'defs',         #  Table definitions
-                        #    $self->defs->{ $table_name } = (HandyDataGen::mysql::TableDef object)
+                        #    $self->defs->{ $table_name } = (Data::HandyGen::mysql::TableDef object)
     ],
 );
 
-use HandyDataGen::mysql::TableDef;
+use Data::HandyGen::mysql::TableDef;
 
 
 ###############
@@ -83,22 +83,22 @@ my %VALUE_DEF_FUNC = (
 
 =head1 NAME
 
-HandyDataGen::mysql - Generates test data for mysql easily.
+Data::HandyGen::mysql - Generates test data for mysql easily.
 
 
 =head1 VERSION
 
-This documentation refers to HandyDataGen::mysql version 0.0.1
+This documentation refers to Data::HandyGen::mysql version 0.0.1
 
 
 =head1 SYNOPSIS
 
     use DBI;
-    use HandyDataGen::mysql;
+    use Data::HandyGen::mysql;
        
     my $dbh = DBI->connect('dbi:mysql:test', 'user', 'pass');
     
-    my $hd = HandyDataGen::mysql->new( fk => 1 );
+    my $hd = Data::HandyGen::mysql->new( fk => 1 );
     $hd->dbh($dbh);
      
     
@@ -763,7 +763,7 @@ sub _table_def {
     my ($self, $table) = @_;
 
     $self->{_table_def}{$table} 
-        ||= HandyDataGen::mysql::TableDef->new( dbh => $self->dbh, table_name => $table );
+        ||= Data::HandyGen::mysql::TableDef->new( dbh => $self->dbh, table_name => $table );
 
     return $self->{_table_def}{$table};
 }
