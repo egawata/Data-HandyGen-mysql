@@ -7,11 +7,7 @@ use Test::More;
 use Test::mysqld;
 use DBI;
 
-plan tests => 2;
-
-
 use Data::HandyGen::mysql;
-
 
 main();
 exit(0);
@@ -36,6 +32,8 @@ sub main {
     is($desc->{val}{DATA_TYPE} , 'int', 'table_int: type of column');
 
     $dbh->disconnect();
+
+    done_testing();
 }
 
 
