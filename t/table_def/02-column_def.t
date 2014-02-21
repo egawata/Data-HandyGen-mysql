@@ -3,13 +3,15 @@ use warnings;
 
 use Data::HandyGen::mysql::TableDef;
 
-use Test::More tests => 4;
+use Test::More;
 use Test::mysqld;
 
 plan skip_all => 'mysql_install_db not found'
     unless `which mysql_install_db 2>/dev/null`;
 
 main();
+done_testing();
+
 exit(0);
 
 
