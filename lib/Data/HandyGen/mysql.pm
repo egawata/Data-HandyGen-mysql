@@ -1112,7 +1112,7 @@ sub _add_record_if_not_exist {
     my ($self, $table, $col, $value) = @_;
 
     if ( 0 == $self->_value_exists_in_table_col($table, $col, $value) ) {     #  No record exists
-        $self->process_table($table, { $col => $value });       #  レコード作成
+        $self->process_table($table, { $col => $value });
         $self->_print_debug("A referenced record created. id = $value");
     }
 }
