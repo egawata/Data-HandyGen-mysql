@@ -12,6 +12,9 @@ use Data::HandyGen::mysql;
 
 my $CLASS_NAME = 'Data::HandyGen::mysql::TableDef';
 
+plan skip_all => 'mysql_install_db not found'
+    unless `which mysql_install_db 2>/dev/null`;
+
 main();
 exit(0);
 

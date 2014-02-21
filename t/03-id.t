@@ -9,6 +9,8 @@ use Test::mysqld;
 
 use Data::HandyGen::mysql;
 
+plan skip_all => 'mysql_install_db not found.'
+    unless `which mysql_install_db 2>/dev/null`;
 
 main();
 exit(0);
@@ -69,7 +71,6 @@ sub test_0 {
 
     #  auto_increment is incremented from 99 to 100
     my $id = $hd->insert('table_test_0');
-    print "ID: $id\n";
 
     #  clear valspec 
     $hd->_set_user_valspec('table_test_0', {});
