@@ -111,7 +111,7 @@ hd_delete_all.pl - delete all records which table names and IDs are written in a
 
 =head1 VERSION
 
-This documentation refers to hd_delete_all.pl version 0.0.1
+This documentation refers to hd_delete_all.pl version 0.0.2
 
 
 =head1 USAGE

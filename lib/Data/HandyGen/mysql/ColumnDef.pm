@@ -3,7 +3,7 @@ package Data::HandyGen::mysql::ColumnDef;
 use strict;
 use warnings;
 
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 $VERSION = eval $VERSION;
 
 use Carp;
@@ -16,7 +16,7 @@ Data::HandyGen::mysql::ColumnDef - Manages one column definition
 
 =head1 VERSION
 
-This documentation refers to Data::HandyGen::mysql::ColumnDef version 0.0.1
+This documentation refers to Data::HandyGen::mysql::ColumnDef version 0.0.2
 
 
 =head1 SYNOPSIS

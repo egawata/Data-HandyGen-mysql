@@ -22,7 +22,7 @@ hd_insert_bulk.pl - Inserts records into mysql tables, using Data::HandyGen.
 
 =head1 VERSION
 
-This documentation refers to hd_insert_bulk.pl 0.0.1
+This documentation refers to hd_insert_bulk.pl 0.0.2
 
 =cut
 

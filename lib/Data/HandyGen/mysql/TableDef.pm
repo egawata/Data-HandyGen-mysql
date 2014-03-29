@@ -3,7 +3,7 @@ package Data::HandyGen::mysql::TableDef;
 use strict;
 use warnings;
 
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 $VERSION = eval $VERSION;
 
 use Carp;
@@ -18,7 +18,7 @@ Data::HandyGen::mysql::TableDef - Manages table definition in mysql
 
 =head1 VERSION
 
-This documentation refers to Data::HandyGen::mysql::TableDef version 0.0.1
+This documentation refers to Data::HandyGen::mysql::TableDef version 0.0.2
 
 
 =head1 SYNOPSIS

@@ -349,7 +349,12 @@ sub test_error {
     });
 
     #  table 'test_error2' does not exist.
-    dies_ok { $hd->insert('test_error2', { id => 'a' }) } "(expected error)";
+    diag q{(NOTE) The following exception "Table ... doesn't exist" is an intended one.};
+    throws_ok( 
+        sub { $hd->insert('test_error2', { id => 'a' }) }, 
+        qr/Table 'test.test_error2' doesn't exist/, 
+        "(expected error)"
+    );
 }
 
 
