@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use 5.008;
-our $VERSION = '0.0.2';
+our $VERSION = '0.0.4';
 $VERSION = eval $VERSION;
 
 
@@ -280,6 +280,14 @@ value of 'colname' will be randomly chosen from $val1, $val2, ...
 =item * colname => { random => [ $val1, $val2, ... ] }
 
 verbose expression of above
+
+=item * colname => { random => qr/$pattern/ }
+
+value of 'colname' is determined by $pattern.
+
+    $hd->insert('table1', { filename => { random => qr/[0-9a-f]{8}\.jpg/ } });  #  'a1b2c3d4.jpg'
+
+NOTE: This function uses randregex of C<String::Random>, which does not handles real regular expression.
 
 =item * colname => { range => [ $min, $max ] }
 
