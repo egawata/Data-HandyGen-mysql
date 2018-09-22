@@ -19,10 +19,11 @@ WriteMakefile(
         "YAML"                  => 0,
         "Getopt::Long"          => 0,
         "Data::Dumper"          => 0,
-    }, 
-    EXE_FILES         => [ 
-        'script/hd_insert_bulk.pl', 
-        'script/hd_delete_all.pl' 
+        "String::Random"        => 0,
+    },
+    EXE_FILES         => [
+        'script/hd_insert_bulk.pl',
+        'script/hd_delete_all.pl'
     ],
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Data/HandyGen/mysql.pm', # retrieve abstract from module
