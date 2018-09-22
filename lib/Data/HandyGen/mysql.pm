@@ -94,7 +94,7 @@ Data::HandyGen::mysql - Generates test data for mysql easily.
 
 =head1 VERSION
 
-This documentation refers to Data::HandyGen::mysql version 0.0.2
+This documentation refers to Data::HandyGen::mysql version 0.0.4
 
 
 =head1 SYNOPSIS
@@ -1196,7 +1196,7 @@ Takashi Egawa (C<< egawa.takashi at gmail com >>)
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c)2012-2014 Takashi Egawa (C<< egawa.takashi at gmail com >>). All rights reserved.
+Copyright (c)2012-2018 Takashi Egawa (C<< egawa.takashi at gmail com >>). All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.
