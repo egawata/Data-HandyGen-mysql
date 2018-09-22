@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 20;
+use Test::More;
 use Test::Exception;
 
 use Data::HandyGen::mysql;
@@ -23,6 +23,8 @@ sub main {
     dies_ok { $hd->determine_value(1) } '(Invalid) scalar';
     dies_ok { $hd->determine_value([1]) } '(Invalid) arrayref';
     lives_ok { $hd->determine_value({}) } '(Valid) empty hashref';
+
+    done_testing;
 }
 
 
