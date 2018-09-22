@@ -51,6 +51,12 @@ sub test_random {
             }
         };
 
+        subtest 'regex' => sub {
+            my $pattern = 'Z[0-9a-f]{16}\.jpg';
+            my $value = $hd->determine_value({ random => qr/$pattern/ });
+            like $value, qr/^$pattern$/;
+        };
+
         subtest 'invalid' => sub {
             dies_ok { $hd->determine_value({ random => undef }) } '(Invalid) undef';
             dies_ok { $hd->determine_value({ random => [] }) } '(Invalid) empty arrayref';

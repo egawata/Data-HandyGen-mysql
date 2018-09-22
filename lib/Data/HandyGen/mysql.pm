@@ -24,6 +24,7 @@ use Carp;
 use SQL::Maker;
 use DateTime;
 use Data::Dumper;
+use String::Random;
 use Class::Accessor::Lite (
     new     => 1,
     rw      => [
@@ -79,6 +80,11 @@ my %VALUE_DEF_FUNC = (
     date        => \&_val_datetime,
     year        => \&_val_year,
 );
+
+# When convert regex into string, some prefix and postfix is added to pattern
+# like (?^:AAAAA)
+# These are used to remove them from string converted from regex.
+my ($REGEX_TO_STRING_PREFIX, $REGEX_TO_STRING_POSTFIX) = (scalar qr/AAAAA/) =~ /^(.*)AAAAA(.*)$/;
 
 
 =head1 NAME
@@ -482,6 +488,12 @@ sub determine_value {
 
             my $ind = rand() * scalar(@$values);
             $value = $values->[$ind];
+        }
+        elsif (ref $values eq 'Regexp') {
+            my $pattern = scalar $values;
+            $pattern =~ s/^\Q$REGEX_TO_STRING_PREFIX\E//;
+            $pattern =~ s/\Q$REGEX_TO_STRING_POSTFIX\E$//;
+            $value = String::Random::random_regex($pattern);
         }
         else {
             confess "Value of 'random' is invalid. type = " . (ref $values);
