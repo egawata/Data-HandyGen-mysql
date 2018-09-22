@@ -11,7 +11,7 @@ WriteMakefile(
         "Class::Accessor::Lite" => 0,
         "DateTime"              => 0,
         "DBD::mysql"            => 0,
-        "Test::More"            => '0.87_01',
+        "Test::More"            => '0.96',
         "Test::Exception"       => 0,
         "Test::mysqld"          => 0,
         "Test::Warn"            => 0,
