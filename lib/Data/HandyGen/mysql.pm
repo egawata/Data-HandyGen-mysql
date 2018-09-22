@@ -1057,7 +1057,7 @@ sub _add_user_valspec {
 
         }
         else {
-            confess "NOTREACHED";
+            confess "Invalid spec of column. Column name = [$col]";
         }
 
     }
