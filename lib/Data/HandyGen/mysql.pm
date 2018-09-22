@@ -475,14 +475,17 @@ sub determine_value {
     if ( exists($valspec_col->{random}) ) {
         my $values = $valspec_col->{random};
 
-        ref $values eq 'ARRAY'
-            or confess "Value of 'random' is invalid. type = " . (ref $values);
-        scalar(@$values) > 0
-            or confess "Value of 'random' is an empty arrayref";
+        if (ref $values eq 'ARRAY') {
+            if (scalar(@$values) == 0) {
+                confess "Value of 'random' is an empty arrayref";
+            }
 
-        my $ind = rand() * scalar(@$values);
-        $value = $values->[$ind]; 
-
+            my $ind = rand() * scalar(@$values);
+            $value = $values->[$ind];
+        }
+        else {
+            confess "Value of 'random' is invalid. type = " . (ref $values);
+        }
     }
     elsif ( exists($valspec_col->{fixval}) ) {
         my $fixval = $valspec_col->{fixval};
