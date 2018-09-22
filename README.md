@@ -237,7 +237,7 @@ Takashi Egawa (`egawa.takashi at gmail com`)
 
 # LICENCE AND COPYRIGHT
 
-Copyright (c)2012-2014 Takashi Egawa (`egawa.takashi at gmail com`). All rights reserved.
+Copyright (c)2012-2018 Takashi Egawa (`egawa.takashi at gmail com`). All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See [perlartistic](https://metacpan.org/pod/perlartistic).
