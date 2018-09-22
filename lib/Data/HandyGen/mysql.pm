@@ -281,13 +281,17 @@ value of 'colname' will be randomly chosen from $val1, $val2, ...
 
 verbose expression of above
 
-=item * colname => { random => qr/$pattern/ }
+=item * colname => qr/$pattern/
 
 value of 'colname' is determined by $pattern.
 
-    $hd->insert('table1', { filename => { random => qr/[0-9a-f]{8}\.jpg/ } });  #  'a1b2c3d4.jpg'
-
 NOTE: This function uses randregex of C<String::Random>, which does not handles real regular expression.
+
+    $hd->insert('table1', { filename => qr/[0-9a-f]{8}\.jpg/ });  #  'a1b2c3d4.jpg'
+
+=item * colname => { random => qr/$pattern/ }
+
+verbose expression of above
 
 =item * colname => { range => [ $min, $max ] }
 
@@ -1032,7 +1036,7 @@ sub _add_user_valspec {
         #  At first, clear all values with the same key.
         delete $self->_valspec()->{$_table}{$_col};
 
-        if ( ref $val eq 'ARRAY' ) {
+        if ( ref $val eq 'ARRAY' or ref $val eq 'Regexp' ) {
             #  arrayref : select one from the list randomly.
             $self->_valspec()->{$_table}{$_col}{random} = $val;
 
