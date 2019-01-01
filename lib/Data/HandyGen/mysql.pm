@@ -406,10 +406,9 @@ sub process_table {
             my $type = $col_def->data_type;
             my $func = $VALUE_DEF_FUNC{$type};
 
-            #  If this data type is not supported, leave it NULL.
+            #  Die if the data type is not supported.
             unless ($func) {
-                warn "Type $type for $col is not supported.";
-                next;
+                die "Type $type for $col is not supported.";
             }
 
             $value = $self->$func($col_def, $exp_id);
