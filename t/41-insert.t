@@ -32,7 +32,7 @@ sub main {
 
     for my $engine (qw/ INNODB MyISAM /) {
         diag "Testing $engine ...";
-        $dbh->do(qq{SET storage_engine=$engine});
+        $dbh->do(qq{SET default_storage_engine=$engine});
         test_nullable($hd);
         test_pk($hd);
         test_notnull_nofk($hd);
