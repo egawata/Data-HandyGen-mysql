@@ -18,7 +18,7 @@ Data::HandyGen::mysql::TableDef - Manages table definition in mysql
 
 =head1 VERSION
 
-This documentation refers to Data::HandyGen::mysql::TableDef version 0.0.2
+This documentation refers to Data::HandyGen::mysql::TableDef version 0.0.5
 
 
 =head1 SYNOPSIS

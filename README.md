@@ -4,7 +4,7 @@ Data::HandyGen::mysql - Generates test data for mysql easily.
 
 # VERSION
 
-This documentation refers to Data::HandyGen::mysql version 0.0.4
+This documentation refers to Data::HandyGen::mysql version 0.0.5
 
 # SYNOPSIS
 

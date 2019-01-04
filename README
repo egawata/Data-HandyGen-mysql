@@ -1,4 +1,4 @@
-Data-HandyGen-mysql version 0.04
+Data-HandyGen-mysql version 0.0.5
 =================================
 
 INSTALLATION
@@ -30,7 +30,7 @@ String::Random
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2013-2018 by egawata
+Copyright (C) 2013-2019 by egawata
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.14.4 or,

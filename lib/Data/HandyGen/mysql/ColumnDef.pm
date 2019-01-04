@@ -16,7 +16,7 @@ Data::HandyGen::mysql::ColumnDef - Manages one column definition
 
 =head1 VERSION
 
-This documentation refers to Data::HandyGen::mysql::ColumnDef version 0.0.2
+This documentation refers to Data::HandyGen::mysql::ColumnDef version 0.0.5
 
 
 =head1 SYNOPSIS
